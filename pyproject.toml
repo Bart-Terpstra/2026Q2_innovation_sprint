@@ -7,5 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "geoai-py>=0.37.1",
     "ipykernel>=7.2.0",
+    "ipympl>=0.10.0",
+    "ipywidgets>=8.1.8",
     "termcolor>=3.3.0",
 ]
