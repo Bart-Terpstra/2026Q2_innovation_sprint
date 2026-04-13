@@ -4,3 +4,13 @@
 # Images
 images/
 *.tif
+*.jpeg
+
+# Env
+.env
+
+# Outputs
+outputs/
+
+# Eomt
+eomt/
