@@ -2,7 +2,7 @@
 import requests
 
 import torch
-from PIL import Image
+from PIL import Image, ImageEnhance, ImageFilter
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from transformers import AutoProcessor, AutoModelForZeroShotObjectDetection
@@ -15,10 +15,26 @@ processor = AutoProcessor.from_pretrained(model_id)
 model = AutoModelForZeroShotObjectDetection.from_pretrained(model_id).to(device)
 
 # %%
-image_url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-image = Image.open(requests.get(image_url, stream=True).raw)
+# image_url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+# image = Image.open(requests.get(image_url, stream=True).raw)
+# image_path = "../images/ship.jpg"
+# image_path = "../images/rear_w_persons4_2025_CASE_OP_OS_4_STERE_BOIKY.JPG"
+image_path = "../images/cropped_images/bridge_w_persons_2025_CASE_OP_OS_4_STERE_BOIKY.JPG"
+image = Image.open(image_path)
+# image = image.resize((768, 768))
+
+# %%
+enhancer = ImageEnhance.Contrast(image)
+image = enhancer.enhance(1.5)
+image = image.filter(ImageFilter.SHARPEN)
+
+# %%
 # Check for cats and remote controls
-text_labels = [["a remote control"]]
+# text_labels = [["a remote control"]]
+# text_labels = [["cannon", "gun turret", "naval gun"]]
+# text_labels = [["a white box"]]
+# text_labels = [["person", "people"]]
+text_labels = [["antenna", "aerial", "thin and long"]]
 
 # %%
 inputs = processor(images=image, text=text_labels, return_tensors="pt").to(model.device)
@@ -29,7 +45,7 @@ with torch.no_grad():
 results = processor.post_process_grounded_object_detection(
     outputs,
     inputs.input_ids,
-    threshold=0.4,
+    threshold=0.15,
     text_threshold=0.3,
     target_sizes=[image.size[::-1]]
 )
