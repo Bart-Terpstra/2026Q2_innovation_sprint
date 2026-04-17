@@ -14,3 +14,7 @@ outputs/
 
 # Eomt
 eomt/
+
+# Cache
+__pycache__/
+*.cache
