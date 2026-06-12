@@ -18,3 +18,6 @@ eomt/
 # Cache
 __pycache__/
 *.cache
+
+# VSCode
+.vscode/
